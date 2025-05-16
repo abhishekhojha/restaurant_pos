@@ -1,4 +1,3 @@
-// Example: user.model.js (Mongoose)
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({

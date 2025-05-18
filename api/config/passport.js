@@ -7,7 +7,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
-      callbackURL: "/auth/google/callback",
+      callbackURL: process.env.CallbackURL || "/auth/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       // 1. find existing user by email

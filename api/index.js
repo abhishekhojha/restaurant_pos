@@ -9,7 +9,7 @@ const AuthRouter = require("./routes/AuthRouter");
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
-app.use("/api/auth", AuthRouter);
+app.use("/", AuthRouter);
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

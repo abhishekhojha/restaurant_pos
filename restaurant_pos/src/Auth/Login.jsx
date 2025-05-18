@@ -85,14 +85,7 @@ export default function Login() {
             variant="outline"
             className="w-full border-gray-300 hover:bg-gray-100"
           >
-            {/* <a href="https://restaurant-pos-silk.vercel.app/auth/google" className="flex items-center gap-2">
-              <FcGoogle className="text-xl" />
-              Sign in with Google
-            </a> */}
-            <a
-              href="http://localhost:4000/auth/google"
-              className="flex items-center gap-2"
-            >
+            <a href="https://restaurant-pos-silk.vercel.app/auth/google" className="flex items-center gap-2">
               <FcGoogle className="text-xl" />
               Sign in with Google
             </a>

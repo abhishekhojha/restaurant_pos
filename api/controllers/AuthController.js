@@ -1,5 +1,5 @@
 const User = require("../models/User");
-const { issueToken } = require("../utills/jwt");
+const { issueToken } = require("../utils/jwt");
 async function register(req, res) {
   const { name, email, password } = req.body;
 

@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const passport = require('passport');
+const { issueToken } = require("../utils/jwt");
+const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173"; 
 const { register } = require("../controllers/AuthController");
 router.get("/", (req, res) => {
   res.send("User api is working");

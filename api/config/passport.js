@@ -30,7 +30,7 @@ passport.use(
         await user.save();
       } else {
         // 2b. existing user — see if google is already linked
-        let googleProv = user.providers.find((p) => p.name === "google");
+        let googleProv = user?.providers?.find((p) => p.name === "google");
         if (!googleProv) {
           // link it
           user.providers.push({

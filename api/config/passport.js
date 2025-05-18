@@ -10,37 +10,42 @@ passport.use(
       callbackURL: process.env.CallbackURL || "/auth/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
-      // 1. find existing user by email
-      const email = profile.emails[0].value;
-      let user = await User.findOne({ email });
+      try {
+        const email = profile.emails[0].value;
 
-      if (!user) {
-        // 2a. new user — create with google provider
-        user = new User({
+        let user = await User.findOne({ email });
+
+        if (user) {
+          // ✅ User exists (local or google) — merge if needed
+          if (user.authProvider !== "google") {
+            // Upgrade to google login
+            user.authProvider = "google";
+            user.googleId = profile.id;
+            user.avatar = profile.photos?.[0]?.value || user.avatar;
+            await user.save();
+          } else if (!user.googleId) {
+            // Existing google login but no googleId stored
+            user.googleId = profile.id;
+            await user.save();
+          }
+
+          return done(null, user);
+        }
+
+        // ❌ No user — create new one
+        const newUser = new User({
           email,
           name: profile.displayName,
-          avatar: profile.photos[0].value,
-          providers: [
-            {
-              name: "google",
-              oauthId: profile.id,
-            },
-          ],
+          avatar: profile.photos?.[0]?.value,
+          authProvider: "google",
+          googleId: profile.id,
         });
-        await user.save();
-      } else {
-        // 2b. existing user — see if google is already linked
-        let googleProv = user?.providers?.find((p) => p.name === "google");
-        if (!googleProv) {
-          // link it
-          user.providers.push({
-            name: "google",
-            oauthId: profile.id,
-          });
-          await user.save();
-        }
+        await newUser.save();
+
+        return done(null, newUser);
+      } catch (err) {
+        return done(err, null);
       }
-      return done(null, user);
     }
   )
 );
